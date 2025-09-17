@@ -13,8 +13,9 @@
 #include <set>
 #include <string>
 #include <unordered_set>
+#include <sstream>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Michael Zhang"; // Don't forget to change this!
 
 /**
  * Takes in a file name and returns a set containing all of the applicant names as a set.
@@ -29,6 +30,22 @@ std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
  */
 std::set<std::string> get_applicants(std::string filename) {
   // STUDENT TODO: Implement this function.
+  std::ifstream ifs{filename};
+  std::set<std::string> name_set;
+  std::string name;
+  while (getline(ifs, name)) {
+    name_set.insert(name);
+  }
+  return name_set;
+}
+
+std::string get_initials(const std::string& name) {
+  std::istringstream iss(name);
+  std::string first, second;
+  if (iss >> first >> second) {
+    return std::string{first[0], second[0]};
+  }
+  return "";
 }
 
 /**
@@ -41,6 +58,23 @@ std::set<std::string> get_applicants(std::string filename) {
  */
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
   // STUDENT TODO: Implement this function.
+  std::queue<const std::string*> matches;
+
+  // for (auto it = students.begin(); it != students.end(); ++it) {
+  //   const auto& student = *it;
+  //   if (student[0] == name[0]) {
+  //     matches.push(&student);
+  //   }
+  // }
+
+  std::string target_initials = get_initials(name);
+
+  for (const auto& student : students) {
+    if (get_initials(student) == target_initials) {
+      matches.push(&student);
+    }
+  }
+  return matches;
 }
 
 /**
@@ -55,6 +89,15 @@ std::queue<const std::string*> find_matches(std::string name, std::set<std::stri
  */
 std::string get_match(std::queue<const std::string*>& matches) {
   // STUDENT TODO: Implement this function.
+  if (matches.empty()) {
+    return "NO MATCHES FOUND.";
+  }
+
+  int index = matches.size() / 2;
+  for (int i = 0; i < index; i++) {
+    matches.pop();
+  }
+  return *matches.front();
 }
 
 /* #### Please don't remove this line! #### */
