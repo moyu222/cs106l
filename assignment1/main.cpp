@@ -63,14 +63,24 @@ struct Course {
  */
 void parse_csv(std::string filename, std::vector<Course>& courses) {
   /* (STUDENT TODO) Your code goes here... */
+  // std::ifstream ifs(filename);
+  // std::string line;
+  // std::getline(ifs, line); // first line, we do not use it.
+  // while (std::getline(ifs, line)) {
+  //   std::vector<std::string> line_vector = split(line, ',');
+  //   Course new_course {line_vector[0], line_vector[1], line_vector[2]};
+  //   courses.push_back(new_course);
+  // }
   std::ifstream ifs(filename);
   std::string line;
-  std::getline(ifs, line); // first line, we do not use it.
-  while (std::getline(ifs, line)) {
-    std::vector<std::string> line_vector = split(line, ',');
-    Course new_course {line_vector[0], line_vector[1], line_vector[2]};
+  std::getline(ifs, line);
+  while (std::getline(ifs, line))
+  {
+    auto line_v = split(line, ',');
+    Course new_course = {line_v[0], line_v[1], line_v[2]};
     courses.push_back(new_course);
   }
+
 }
 
 /**
@@ -93,22 +103,25 @@ void parse_csv(std::string filename, std::vector<Course>& courses) {
  */
 void write_courses_offered(std::vector<Course>& all_courses) {
   /* (STUDENT TODO) Your code goes here... */
-  std::ofstream ofs("student_output/courses_offered.csv");
-  ofs << "Title,Number of Units,Quarter\n";
-
-  std::vector<Course> course_offered;
-
-  for (auto& course : all_courses) {
-    if (course.quarter != "null") {
-      course_offered.push_back(course);
-      ofs << course.title << "," << course.number_of_units << "," 
-          << course.quarter << "\n";
+  std::vector<Course> offered;
+  // std::ofstream ofs("student_output/courses_offered.csv");
+  std::ofstream ofs;
+  ofs.open("student_output/courses_offered.csv");
+  ofs << "Title,Number of Units,Quarter" << '\n';
+  for (const Course &course : all_courses)
+  {
+    if (course.quarter != "null")
+    {
+      offered.push_back(course);
+      ofs << course.title << "," << course.number_of_units << "," << course.quarter << '\n';
     }
   }
-
-  for (const auto& ocourse : course_offered) {
-    delete_elem_from_vector(all_courses, ocourse);
+  for (const Course &offered_course : offered)
+  {
+    auto it = std::find(all_courses.begin(), all_courses.end(), offered_course);
+    all_courses.erase(it);
   }
+
 }
 /**
  * This function writes the courses NOT offered to the file
@@ -126,11 +139,10 @@ void write_courses_offered(std::vector<Course>& all_courses) {
 void write_courses_not_offered(std::vector<Course>& unlisted_courses) {
   /* (STUDENT TODO) Your code goes here... */
   std::ofstream ofs("student_output/courses_not_offered.csv");
-  std::vector<Course> course_offered;
-  ofs << "Title,Number of Units,Quarter\n";
-  for (auto& not_offered_course : unlisted_courses) {
-    ofs << not_offered_course.title << "," << not_offered_course.number_of_units << ","
-        << not_offered_course.quarter << "\n";
+  ofs << "Title,Number of Units,Quarter" << '\n';
+  for (const auto & [title, number_of_units, quarter] : unlisted_courses)
+  {
+    ofs << title << "," << number_of_units << "," << quarter << '\n';
   }
 }
 

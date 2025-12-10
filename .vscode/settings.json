@@ -57,5 +57,6 @@
     "variant": "cpp",
     "vector": "cpp",
     "algorithm": "cpp"
-  }
+  },
+  "cmake.sourceDirectory": "/Users/zhangyangzonghan/Desktop/cs106l-assignments/assignment0"
 }

@@ -14,8 +14,8 @@ public:
     T& at(size_t index);
     T& operator[](size_t index);
 
-    size_t size();
-    bool empty();
+    size_t size() const;
+    bool empty() const;
 
     iterator begin();
     iterator end();

@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include "vector.h"
 
 template <typename T>
 Vector<T>::Vector()

@@ -4,6 +4,11 @@
 # Prerequisites
 *.d
 
+cmake-build-debug/
+.DS_Store
+.idea/
+.vscode/
+
 # Compiled Object files
 *.slo
 *.lo

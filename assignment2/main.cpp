@@ -30,20 +30,22 @@ std::string kYourName = "Michael Zhang"; // Don't forget to change this!
  */
 std::set<std::string> get_applicants(std::string filename) {
   // STUDENT TODO: Implement this function.
-  std::ifstream ifs{filename};
-  std::set<std::string> name_set;
+  std::set<std::string> applications;
+  std::ifstream ifs(filename);
   std::string name;
-  while (getline(ifs, name)) {
-    name_set.insert(name);
+  while (getline(ifs, name))
+  {
+    applications.insert(name);
   }
-  return name_set;
+  return applications;
 }
 
 std::string get_initials(const std::string& name) {
   std::istringstream iss(name);
   std::string first, second;
   if (iss >> first >> second) {
-    return std::string{first[0], second[0]};
+    // return first[0]+second[0];
+    return std::string(1, first[0]) + std::string(1, second[0]);
   }
   return "";
 }
@@ -59,19 +61,12 @@ std::string get_initials(const std::string& name) {
 std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
   // STUDENT TODO: Implement this function.
   std::queue<const std::string*> matches;
-
-  // for (auto it = students.begin(); it != students.end(); ++it) {
-  //   const auto& student = *it;
-  //   if (student[0] == name[0]) {
-  //     matches.push(&student);
-  //   }
-  // }
-
-  std::string target_initials = get_initials(name);
-
-  for (const auto& student : students) {
-    if (get_initials(student) == target_initials) {
-      matches.push(&student);
+  std::string initial = get_initials(name);
+  for (auto it = students.begin(); it != students.end(); it++)
+  {
+    if (get_initials(*it) == initial)
+    {
+     matches.push(&(*it));
     }
   }
   return matches;
