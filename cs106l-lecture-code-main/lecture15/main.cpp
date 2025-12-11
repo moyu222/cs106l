@@ -4,6 +4,8 @@
 #include <utility>
 #include <chrono>
 
+// #define ENABLE_MOVE_SEMANTICS
+
 class Photo {
 public:
 	Photo(int width, int height, const char* tag = nullptr);
@@ -13,8 +15,8 @@ public:
 
 #ifdef ENABLE_MOVE_SEMANTICS
   // Move SMFs
-  Photo(Photo&& other);
-  Photo& operator=(Photo&& other);
+  Photo(Photo&& other) noexcept;
+  Photo& operator=(Photo&& other) noexcept;
 #endif
 
 private:
@@ -71,7 +73,7 @@ Photo::~Photo()
 
 #ifdef ENABLE_MOVE_SEMANTICS
 
-Photo::Photo(Photo&& other)
+Photo::Photo(Photo&& other) noexcept
   : width(other.width)
   , height(other.height)
   , data(other.data)
@@ -80,7 +82,7 @@ Photo::Photo(Photo&& other)
   other.data = nullptr;
 }
 
-Photo& Photo::operator=(Photo&& other)
+Photo& Photo::operator=(Photo&& other) noexcept
 {
   log() << "Photo::operator=(Photo&&)" << std::endl;
 
